@@ -136,12 +136,10 @@ class MainBody extends Component {
     const listOfItems = this.state.todoItems.map((todo, indx) => (
       <ListItem key={indx} id={indx} todo={todo} handleRemoveItem={this.handleRemoveItem} saveModifiedInput={this.saveModifiedInput} handleInlineInput={this.handleInlineInput} enterEditMode={this.enterEditMode} saveModifiedOnblur={this.saveModifiedOnblur}/>
     ))
-    console.log(listOfItems)
-
 
     return (
      <div> 
-        <input className="inputBox" type="text" value={this.state.inputboxtext} onChange={this.handleTextChange} onKeyUp={this.handleTextboxinput}></input>
+        <input className="inputBox" type="text"  onKeyUp={this.handleTextboxinput}></input>
         {this.state.todoItems.length > 0 ? <div className="listContainer"><div >{listOfItems}</div></div> : ""} 
      </div>
     )
