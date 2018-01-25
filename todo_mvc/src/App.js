@@ -71,7 +71,7 @@ class MainBody extends Component {
     super(props);
     this.state = {
       inputboxtext: "",
-      todoItems: [{todoText: "todo 1", complete: false, inEditMode: true}, {todoText: "todo 1", complete: false, inEditMode: false}] // {todoText: "todo 1", complete: false, inEditMode: true}, {todoText: "todo 1", complete: false, inEditMode: false}
+      todoItems: [] // {todoText: "todo 1", complete: false, inEditMode: true}, {todoText: "todo 1", complete: false, inEditMode: false}
     }
     this.handleTextboxinput = this.handleTextboxinput.bind(this);
     this.handleRemoveItem = this.handleRemoveItem.bind(this)
@@ -79,26 +79,26 @@ class MainBody extends Component {
     this.handleInlineInput = this.handleInlineInput.bind(this)
     this.saveModifiedInput = this.saveModifiedInput.bind(this)
     this.saveModifiedOnblur = this.saveModifiedOnblur.bind(this)
+    this.handleEnter = this.handleEnter.bind(this)
   }
   
   handleTextboxinput(event) {
+      this.setState({inputboxtext: event.target.value})
+  }
+
+  handleEnter(event) {
     if(event.key === 'Enter') {
       let listItem = {todoText: event.target.value, complete: false, inEditMode: false}
       let tempArray = this.state.todoItems
       tempArray.push(listItem)
       this.setState({todoItems: tempArray, inputboxtext: ""})
-    }else{
-      this.setState({inputboxtext: event.target.value})
     }
-
   }
 
   handleInlineInput(rowId, event) {
-
-    console.log(event.key)
       let tempArray = this.state.todoItems
       tempArray[rowId].todoText = event.target.value
-      this.setState({inputboxtext: event.target.value})
+      this.setState({todoItems: tempArray})
   }
 
   saveModifiedInput(rowId, event) {
@@ -124,22 +124,19 @@ class MainBody extends Component {
   }
 
   enterEditMode(rowId) {
-    console.log("in edit on line: " + rowId)
     let tempArray = this.state.todoItems;
     tempArray[rowId].inEditMode = true;
     this.setState({todoItems: tempArray})
   }
 
   render() {
-    // todo clear input box after enter
-    console.log(this.state.todoItems.length)
     const listOfItems = this.state.todoItems.map((todo, indx) => (
       <ListItem key={indx} id={indx} todo={todo} handleRemoveItem={this.handleRemoveItem} saveModifiedInput={this.saveModifiedInput} handleInlineInput={this.handleInlineInput} enterEditMode={this.enterEditMode} saveModifiedOnblur={this.saveModifiedOnblur}/>
     ))
 
     return (
      <div> 
-        <input className="inputBox" type="text"  onKeyUp={this.handleTextboxinput}></input>
+        <input className="inputBox" type="text" value={this.state.inputboxtext} onChange={this.handleTextboxinput} onKeyUp={this.handleEnter}></input>
         {this.state.todoItems.length > 0 ? <div className="listContainer"><div >{listOfItems}</div></div> : ""} 
      </div>
     )
