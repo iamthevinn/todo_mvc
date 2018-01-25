@@ -7,8 +7,8 @@ const ListItem = (props) => {
   item = (<div className="listItem">
                 <div className="container">
                   <div className="round">
-                    <input type="checkbox" id={props.id.toString()} />
-                    <label htmlFor={props.id.toString()}></label>
+                    <input onChange={() => {props.toggleComplete(props.id)}} type="checkbox" id={props.id.toString() + "checkbox"} />
+                    <label htmlFor={props.id.toString() + "checkbox"}></label>
                   </div>
                 </div>
                 <div className="nonCompletedText" onDoubleClick={() => {props.enterEditMode(props.id)}} >{props.todo.todoText}</div>
@@ -19,11 +19,11 @@ const ListItem = (props) => {
     item = (<div className="listItem">
               <div className="container">
                 <div className="round">
-                  <input type="checkbox" id={props.id.toString()} />
-                  <label htmlFor={props.id.toString()}></label>
+                  <input onChange={() => {props.toggleComplete(props.id)}} type="checkbox" id={props.id.toString() + "checkbox"} />
+                  <label htmlFor={props.id.toString() + "checkbox"}></label>
                 </div>
               </div>
-              <div className="completedText">{props.todo.todoText}</div>
+              <div className="completedText" onDoubleClick={() => {props.enterEditMode(props.id)}} >{props.todo.todoText}</div>
               <div className="deleteButton" onClick={() => props.handleRemoveItem(props.id)}>X</div>
             </div>)
   } else {
@@ -31,11 +31,12 @@ const ListItem = (props) => {
     <input type="text" className="editingText" autoFocus onBlur={() => {props.saveModifiedOnblur(props.id)}} onKeyUp={(event) => {props.saveModifiedInput(props.id,event)}} onChange={(event) => props.handleInlineInput(props.id, event)} value={props.todo.todoText} ></input>
   </div>)
 
-if (props.todo.complete)
-item = (<div className="listItem">
+  if (props.todo.complete)
+    item = (<div className="listItem">
     <input type="text" className="editingText" autoFocus onBlur={() => {props.saveModifiedOnblur(props.id)}} onKeyUp={(event) => {props.saveModifiedInput(props.id,event)}} onChange={(event) => props.handleInlineInput(props.id, event)} value={props.todo.todoText} ></input>
-  </div>)
+          </div>)
   }
+  
   return (
     <div id={props.id} >
       {item}
@@ -80,6 +81,16 @@ class MainBody extends Component {
     this.saveModifiedInput = this.saveModifiedInput.bind(this)
     this.saveModifiedOnblur = this.saveModifiedOnblur.bind(this)
     this.handleEnter = this.handleEnter.bind(this)
+    this.toggleComplete = this.toggleComplete.bind(this)
+  }
+
+  toggleComplete(rowId) {
+    let tempArray = this.state.todoItems
+    if (tempArray[rowId].complete)
+      tempArray[rowId].complete = false;
+    else
+      tempArray[rowId].complete = true;
+    this.setState({todoItems: tempArray})
   }
   
   handleTextboxinput(event) {
@@ -131,7 +142,7 @@ class MainBody extends Component {
 
   render() {
     const listOfItems = this.state.todoItems.map((todo, indx) => (
-      <ListItem key={indx} id={indx} todo={todo} handleRemoveItem={this.handleRemoveItem} saveModifiedInput={this.saveModifiedInput} handleInlineInput={this.handleInlineInput} enterEditMode={this.enterEditMode} saveModifiedOnblur={this.saveModifiedOnblur}/>
+      <ListItem key={indx} id={indx} todo={todo} toggleComplete={this.toggleComplete} handleRemoveItem={this.handleRemoveItem} saveModifiedInput={this.saveModifiedInput} handleInlineInput={this.handleInlineInput} enterEditMode={this.enterEditMode} saveModifiedOnblur={this.saveModifiedOnblur}/>
     ))
 
     return (
