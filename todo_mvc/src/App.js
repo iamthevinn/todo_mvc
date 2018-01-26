@@ -7,7 +7,7 @@ const ListItem = (props) => {
   item = (<div className="listItem">
                 <div className="container">
                   <div className="round">
-                    <input onChange={() => {props.toggleComplete(props.id)}} type="checkbox" id={props.id.toString() + "checkbox"} />
+                    <input checked={props.todo.complete} onChange={() => {props.toggleComplete(props.id)}} type="checkbox" id={props.id.toString() + "checkbox"} />
                     <label htmlFor={props.id.toString() + "checkbox"}></label>
                   </div>
                 </div>
@@ -19,7 +19,7 @@ const ListItem = (props) => {
     item = (<div className="listItem">
               <div className="container">
                 <div className="round">
-                  <input onChange={() => {props.toggleComplete(props.id)}} type="checkbox" id={props.id.toString() + "checkbox"} />
+                  <input checked={props.todo.complete} onChange={() => {props.toggleComplete(props.id)}} type="checkbox" id={props.id.toString() + "checkbox"} />
                   <label htmlFor={props.id.toString() + "checkbox"}></label>
                 </div>
               </div>
